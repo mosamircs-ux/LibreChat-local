@@ -500,9 +500,9 @@ const processAgentFileUpload = async ({ req, res, metadata }) => {
 
   const fileConfig = mergeFileConfig(req.app.locals.fileConfig);
 
-  const shouldUseTextParsing = fileConfig.checkType(
+  const shouldUseText = fileConfig.checkType(
     file.mimetype,
-    fileConfig.textParsing?.supportedMimeTypes || [],
+    fileConfig.text?.supportedMimeTypes || [],
   );
   const shouldUseOCR = fileConfig.checkType(
     file.mimetype,
@@ -587,7 +587,7 @@ const processAgentFileUpload = async ({ req, res, metadata }) => {
       return await createTextFile(text, bytes, ocrFileURL, 'text/plain');
     }
 
-    if (shouldUseTextParsing) {
+    if (shouldUseText) {
       const { text, bytes } = await parseText({ req, file, file_id });
       return await createTextFile(text, bytes, file.path, file.mimetype);
     }
